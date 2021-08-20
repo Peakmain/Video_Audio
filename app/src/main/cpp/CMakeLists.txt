@@ -4,9 +4,11 @@ cmake_minimum_required(VERSION 3.4.1)
 
 
 include_directories(./include)
+include_directories(./include/crash)
 
 set(source_dir ./src)
 aux_source_directory(${source_dir} src_list)
+aux_source_directory(${source_dir}/crash src_list)
 add_library( # Sets the name of the library.
         native-lib
 
