@@ -6,7 +6,7 @@
 #define VIDEO_AUDIO_CRASHANALYSER_H
 #include <pthread.h>
 #include "log.h"
-
+#include "threads.h"
 #include <malloc.h>
 using namespace std;
 #define BACKTRACE_FRAMES_MAX 32

@@ -7,4 +7,6 @@ package com.peakmain.video_audio.utils.crash.callback;
  * describe：
  */
 public interface CrashListener {
+    void onCrash(String threadName, Error error);
 }
+

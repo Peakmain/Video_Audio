@@ -1,8 +1,10 @@
 package com.peakmain.video_audio
 
+import android.util.Log
 import com.peakmain.ui.recyclerview.listener.OnItemClickListener
 import com.peakmain.video_audio.basic.BaseActivity
 import com.peakmain.video_audio.basic.BaseRecyclerStringAdapter
+import com.peakmain.video_audio.utils.crash.NativeCrashMonitor
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -18,14 +20,14 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initData() {
-        mData.add("simple 使用")
+        mData.add("native异常捕获")
         val adapter = BaseRecyclerStringAdapter(this, data = mData)
         recycler_view.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 when (position){
                     0->{
-
+                        NativeCrashMonitor.nativeCrashCreate()
                     }
                 }
             }

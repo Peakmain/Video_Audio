@@ -2,8 +2,10 @@
 // Created by admin on 2021/8/20.
 //
 
+#include <crash/Utils.h>
 #include "../../include/crash/CrashAnalyser.h"
 #include "../../include/crash/JNIBridge.h"
+#include <unwind.h>
 
 //锁的条件变量
 pthread_cond_t signalCond;
@@ -11,6 +13,21 @@ pthread_mutex_t signalLock;
 pthread_cond_t exceptionCond;
 pthread_mutex_t exceptionLock;
 native_handler_context *handlerContext;
+
+_Unwind_Reason_Code unwind_callback(struct _Unwind_Context *context, void *arg) {
+    native_handler_context *const s = static_cast<native_handler_context *const>(arg);
+    //pc是每个堆栈的栈顶
+    const uintptr_t pc = _Unwind_GetIP(context);
+    if (pc != 0x0) {
+        // 把 pc 值保存到 native_handler_context
+        s->frames[s->frame_size++] = pc;
+    }
+    if (s->frame_size == BACKTRACE_FRAMES_MAX) {
+        return _URC_END_OF_STACK;
+    } else {
+        return _URC_NO_REASON;
+    }
+}
 
 void initCondition() {
     handlerContext = (native_handler_context *) malloc(sizeof(native_handler_context_struct));
@@ -30,7 +47,7 @@ void *threadCrashMonitor(void *argv) {
         analysisNativeException();
 
         //抛给java
-
+        jniBridge->throwException2Java(handlerContext);
     }
 }
 
@@ -59,9 +76,24 @@ void copyInfo2Context(int code, siginfo_t *si, void *sc) {
     handlerContext->sc = sc;
     handlerContext->pid = getpid();
     handlerContext->tid = gettid();
-    handlerContext->processName =
+    handlerContext->processName = getProcessName(handlerContext->pid);
+    if (handlerContext->pid == handlerContext->tid) {
+        handlerContext->threadName = "main";
+    } else {
+        handlerContext->threadName = getThreadName(handlerContext->tid);
+    }
+    handlerContext->frame_size = 0;
+    //捕获c/c++的堆栈信息
+    _Unwind_Backtrace(unwind_callback, handlerContext);
 }
-
+//分析native的异常
 void analysisNativeException() {
-
+    const char *posixDesc = desc_sig(handlerContext->si->si_signo, handlerContext->si->si_code);
+    LOGD("posixDesc -> %s", posixDesc);
+    LOGD("signal -> %d", handlerContext->si->si_signo);
+    LOGD("address -> %p", handlerContext->si->si_addr);
+    LOGD("processName -> %s", handlerContext->processName);
+    LOGD("threadName -> %s", handlerContext->threadName);
+    LOGD("pid -> %d", handlerContext->pid);
+    LOGD("tid -> %d", handlerContext->tid);
 }

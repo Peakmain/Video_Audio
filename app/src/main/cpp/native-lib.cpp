@@ -2,6 +2,7 @@
 #include <string>
 #include <crash/JNIBridge.h>
 #include <pthread.h>
+#include <crash/SignalHandler.h>
 #include "../include/log.h"
 #include "../include/crash/CrashAnalyser.h"
 
@@ -32,3 +33,18 @@ Java_com_peakmain_video_1audio_utils_crash_NativeCrashMonitor_nativeCrashInit(JN
     }
 }
 
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_peakmain_video_1audio_utils_crash_NativeCrashMonitor_nativeSetup(JNIEnv *env,
+                                                                          jobject thiz) {
+    installAlternateStack();
+    installSignalHandlers();
+}
+//创建一个native异常
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_peakmain_video_1audio_utils_crash_NativeCrashMonitor_nativeCrashCreate(JNIEnv *env,
+                                                                                jclass clazz) {
+    int *num = NULL;
+    *num = 100;
+}
