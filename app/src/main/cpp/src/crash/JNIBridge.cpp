@@ -40,7 +40,6 @@ void JNIBridge::throwException2Java(native_handler_context *handlerContext) {
         Dl_info stack_info;
         void *const addr = (void *) pc;
         if (dladdr(addr, &stack_info) != 0 && stack_info.dli_fname != NULL) {
-
             if (stack_info.dli_fbase == 0) {
                 // No valid map associated with this frame.
                 result += "  <unknown>";
@@ -64,7 +63,7 @@ void JNIBridge::throwException2Java(native_handler_context *handlerContext) {
                 }
                 if (stack_info.dli_saddr != 0) {
                     uintptr_t offset = pc - (uintptr_t) stack_info.dli_saddr;
-                    result += android::base::StringPrintf("+%" PRId64, (uint64_t) offset);
+                    result += android::base::StringPrintf(":%" PRId64, (uint64_t) offset);
                 }
                 result += ')';
             }
