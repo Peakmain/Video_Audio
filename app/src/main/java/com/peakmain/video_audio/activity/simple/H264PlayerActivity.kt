@@ -11,6 +11,7 @@ import com.peakmain.video_audio.R
 import com.peakmain.video_audio.basic.BaseActivity
 import com.peakmain.video_audio.simple.BasicSurfaceHolderCallback
 import com.peakmain.video_audio.simple.H264Player
+import kotlinx.android.synthetic.main.activity_h264_player.*
 import java.io.File
 
 /**
@@ -21,6 +22,9 @@ import java.io.File
  */
 class H264PlayerActivity : BaseActivity() {
     var h264Player: H264Player? = null
+    private val isPrintImage by lazy{
+        intent.getBooleanExtra("isPrintImage",false)
+    }
     override fun getLayoutId(): Int {
         return R.layout.activity_h264_player
     }
@@ -32,8 +36,7 @@ class H264PlayerActivity : BaseActivity() {
     }
 
     private fun initSurface() {
-        val surface = findViewById<SurfaceView>(R.id.surfaceView)
-        val surfaceHolder = surface.holder
+        val surfaceHolder = surfaceView.holder
         surfaceHolder.addCallback(object : BasicSurfaceHolderCallback() {
             override fun surfaceCreated(holder: SurfaceHolder?) {
                 h264Player = H264Player(
@@ -42,9 +45,10 @@ class H264PlayerActivity : BaseActivity() {
                         Environment.getExternalStorageDirectory(),
                         "out.h264"
                     ).absolutePath,
-                    surfaceHolder.surface
+                    surfaceHolder.surface,
+                    isPrintImage
                 )
-                h264Player?.startPlay()
+
             }
 
         })
@@ -65,10 +69,11 @@ class H264PlayerActivity : BaseActivity() {
     }
 
     override fun initData() {
+
     }
 
     fun mediaCodecH264PlayClick(view: View) {
-
+        h264Player?.startPlay()
     }
 
 }
