@@ -4,14 +4,16 @@ import android.content.Context;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.util.Log;
 import android.view.Surface;
 
 import androidx.annotation.RequiresApi;
 
-import com.peakmain.video_audio.R;
-import com.peakmain.video_audio.utils.Utils;
+import com.peakmain.ui.utils.LogUtils;
+import com.peakmain.video_audio.utils.VideoAudioUtils;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -28,28 +30,27 @@ public class H264Player {
     private Surface mSurface;
     private Handler mHandler;
     private MediaCodec mediaCodec;
-    private static int TIMEOUT = 1000;
+    private static int TIMEOUT = 10000;
+    private static final String TAG = H264Player.class.getSimpleName();
 
-    public H264Player(Context mContext, String mPath, Surface mSurface) {
-        this.mContext = mContext;
-        this.mPath = mPath;
-        this.mSurface = mSurface;
+    public H264Player(Context context, String path, Surface surface) {
+        this.mContext = context;
+        this.mPath = path;
+        this.mSurface = surface;
         HandlerThread handlerThread = new HandlerThread("H264Player");
         handlerThread.start();
         mHandler = new Handler(handlerThread.getLooper());
         try {
-            //解码器
             mediaCodec = MediaCodec.createDecoderByType("video/avc");
-            MediaFormat format = new MediaFormat();
-            //设置码率
+            MediaFormat format = MediaFormat.createVideoFormat("video/avc", 720, 1280);
+            //设置帧数
             format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
-            mediaCodec.configure(format, mSurface, null, 0);
+            mediaCodec.configure(format, surface, null, 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void startPlay() {
         mHandler.post(() -> {
             mediaCodec.start();
@@ -57,11 +58,10 @@ public class H264Player {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void decode() {
-        byte[] bytes = new byte[0];
+        byte[] bytes = null;
         try {
-            bytes = Utils.getBytes(mPath);
+            bytes = VideoAudioUtils.getBytes(mPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,10 +70,11 @@ public class H264Player {
         int totalSize = bytes.length;
         while (true) {
             if (totalSize == 0 || startIndex >= totalSize) {
-                return;
+                break;
             }
             //+2的目的跳过pps和sps
             int nextFrameStart = findByFrame(bytes, startIndex + 2, totalSize);
+            MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             int decodeInputIndex = mediaCodec.dequeueInputBuffer(TIMEOUT);
             if (decodeInputIndex >= 0) {
                 ByteBuffer byteBuffer = mediaCodec.getInputBuffer(decodeInputIndex);
@@ -86,17 +87,26 @@ public class H264Player {
                 continue;
             }
             //得到数据
-            int decodeOutIndex = mediaCodec.dequeueOutputBuffer(new MediaCodec.BufferInfo(), TIMEOUT);
+            int decodeOutIndex = mediaCodec.dequeueOutputBuffer(info, TIMEOUT);
             if (decodeOutIndex >= 0) {
+                try {
+                    Thread.sleep(25);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 //如果绑定了surface则设置为true
                 mediaCodec.releaseOutputBuffer(decodeOutIndex, true);
+            } else {
+                Log.e(TAG, "解绑失败");
             }
         }
     }
 
-    //找到下一帧的i帧
+    /**
+     * 找到下一帧的i帧
+     */
     private int findByFrame(byte[] bytes, int start, int totalSize) {
-        for (int i = 0; i < totalSize - 4; i++) {
+        for (int i = start; i < totalSize - 4; i++) {
             //0x 00 00 00 01
             if (bytes[i] == 0x00 && bytes[i + 1] == 0x00 && bytes[i + 2] == 0x00 && bytes[i + 3] == 0x01) {
                 return i;

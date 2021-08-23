@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.peakmain.video_audio">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -18,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SimpleActivity" />
+        <activity android:name=".activity.simple.H264PlayerActivity" />
     </application>
 
 </manifest>

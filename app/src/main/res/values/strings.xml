@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Video_Audio</string>
+    <string name="stv_mediacodec_h264_player">MediaCodec播放H264</string>
 </resources>

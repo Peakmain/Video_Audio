@@ -3,6 +3,7 @@ package com.peakmain.video_audio.activity
 import android.content.Intent
 import com.peakmain.ui.recyclerview.listener.OnItemClickListener
 import com.peakmain.video_audio.R
+import com.peakmain.video_audio.activity.simple.H264PlayerActivity
 import com.peakmain.video_audio.basic.BaseActivity
 import com.peakmain.video_audio.basic.BaseRecyclerStringAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,7 +32,7 @@ class SimpleActivity:BaseActivity(){
             override fun onItemClick(position: Int) {
                 when (position){
                     0->{
-                        startActivity(Intent(this@SimpleActivity,SimpleActivity::class.java))
+                        startActivity(Intent(this@SimpleActivity,H264PlayerActivity::class.java))
                     }
                 }
             }
