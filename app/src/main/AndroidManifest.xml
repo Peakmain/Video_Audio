@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".activity.SimpleActivity" />
         <activity android:name=".activity.simple.H264PlayerActivity" />
+        <activity android:name=".activity.MMKVActivity" />
     </application>
 
 </manifest>

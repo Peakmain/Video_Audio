@@ -1,10 +1,4 @@
-#include <jni.h>
-#include <string>
-#include <crash/JNIBridge.h>
-#include <pthread.h>
-#include <crash/SignalHandler.h>
-#include "../include/log.h"
-#include "../include/crash/CrashAnalyser.h"
+#include "native-lib.h"
 
 /**
  * 捕获native异常
@@ -47,4 +41,44 @@ Java_com_peakmain_video_1audio_utils_crash_NativeCrashMonitor_nativeCrashCreate(
                                                                                 jclass clazz) {
     int *num = NULL;
     *num = 100;
+}
+/**
+ * MMKV
+ */
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_peakmain_video_1audio_simple_mmkv_MMKV_mmkvInit(JNIEnv *env, jclass clazz,
+                                                         jstring rootDir_) {
+    const char *rootDir = env->GetStringUTFChars(rootDir_, 0);
+
+    MMKV::initializeMMKV(rootDir);
+
+    env->ReleaseStringUTFChars(rootDir_, rootDir);
+
+}extern "C"
+JNIEXPORT jlong JNICALL
+Java_com_peakmain_video_1audio_simple_mmkv_MMKV_getDefaultMMKV(JNIEnv *env, jclass clazz) {
+    MMKV *kv = MMKV::defaultMMKV();
+    return reinterpret_cast<jlong>(kv);
+
+}extern "C"
+JNIEXPORT jint JNICALL
+Java_com_peakmain_video_1audio_simple_mmkv_MMKV_getInt(JNIEnv *env, jobject thiz, jlong handle,
+                                                       jstring key_, jint defaultValue) {
+
+    const char *key = env->GetStringUTFChars(key_, 0);
+    MMKV *kv = reinterpret_cast<MMKV *>(handle);
+    int returnValue = kv->getInt(key, defaultValue);
+
+    env->ReleaseStringUTFChars(key_, key);
+    return returnValue;
+
+}extern "C"
+JNIEXPORT void JNICALL
+Java_com_peakmain_video_1audio_simple_mmkv_MMKV_putInt(JNIEnv *env, jobject thiz, jlong handle,
+                                                       jstring key_, jint value) {
+    const char *key = env->GetStringUTFChars(key_, 0);
+    MMKV *kv = reinterpret_cast<MMKV *>(handle);
+    kv->putInt(key, value);
+    env->ReleaseStringUTFChars(key_, key);
 }

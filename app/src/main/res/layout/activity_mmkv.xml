@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MMKVActivity"
+    android:orientation="vertical">
+
+    <com.peakmain.ui.widget.ShapeTextView
+        style="@style/stv_basic_style"
+        android:onClick="writeClick"
+        android:text="写数据"
+        app:shapeTvBackgroundColor="@color/color_2F73F6"
+        app:shapeTvRadius="@dimen/dimen_5" />
+
+
+    <com.peakmain.ui.widget.ShapeTextView
+        style="@style/stv_basic_style"
+        android:onClick="readClick"
+        android:text="读数据"
+        app:shapeTvBackgroundColor="@color/color_2F73F6"
+        app:shapeTvRadius="@dimen/dimen_5" />
+</LinearLayout>

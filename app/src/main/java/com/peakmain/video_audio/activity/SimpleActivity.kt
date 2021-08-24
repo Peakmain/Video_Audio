@@ -27,6 +27,7 @@ class SimpleActivity:BaseActivity(){
     override fun initData() {
         mData.add("MediaCodec实现H264音视频播放")
         mData.add("MediaCodec实现H264音视频转成图片(单张)")
+        mData.add("MMKV的读写")
         val adapter = BaseRecyclerStringAdapter(this, data = mData)
         recycler_view.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
@@ -40,6 +41,10 @@ class SimpleActivity:BaseActivity(){
                     1->{
                         val intent = Intent(this@SimpleActivity, H264PlayerActivity::class.java)
                         intent.putExtra("isPrintImage",true)
+                        startActivity(intent)
+                    }
+                    2->{
+                        val intent = Intent(this@SimpleActivity, MMKVActivity::class.java)
                         startActivity(intent)
                     }
                 }
