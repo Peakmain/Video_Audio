@@ -28,15 +28,14 @@ class MMKVActivity : BaseActivity() {
     }
 
     fun readClick(view: View) {
-        ToastUtils.showLong(mmkv!!.getString("peakmain"))
+        ToastUtils.showLong(mmkv!!.getInt("name11",0).toString())
     }
     fun writeClick(view: View) {
         val start = System.currentTimeMillis()
-   /*     for (i in 0..999) {
+        for (i in 0..999) {
             mmkv?.putInt("name$i", i)
-        }*/
-        mmkv?.putInt("peakmain",11)
-        mmkv?.putString("treasure","ceshi")
+        }
+
 
         val time = System.currentTimeMillis() - start
         LogUtils.e("write: 时间花销  $time")
