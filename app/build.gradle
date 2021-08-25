@@ -27,6 +27,7 @@ android {
         }
         debug{
             debuggable true
+            buildConfigField("String","TAG","\"TAG\"")
         }
     }
     externalNativeBuild {
