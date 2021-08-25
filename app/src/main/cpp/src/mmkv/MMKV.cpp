@@ -96,7 +96,7 @@ void MMKV::putInt(const std::string &key, int32_t value) {
 }
 
 void MMKV::putString(const std::string &key, const std::string &value) {
-    int32_t size = ProtoBuf::computeInt32Size(value.length());
+    int32_t size = value.length()+ProtoBuf::computeInt32Size(value.length());
     ProtoBuf *buf = new ProtoBuf(size);
     buf->writeString(value);
     map.emplace(key, buf);
@@ -126,7 +126,7 @@ std::string MMKV::getString(std::string key) {
         buf->restore();
         return returnValue;
     }
-    return NULL;
+    return "";
 }
 
 void MMKV::appendDataWithKey(std::string key, ProtoBuf *value) {

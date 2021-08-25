@@ -20,6 +20,7 @@ class MMKVActivity : BaseActivity() {
     }
 
     override fun initView() {
+        mNavigationBuilder!!.setTitleText("MMKV的读写").create()
         MMKV.init(this)
         mmkv = MMKV.defaultMMKV()
     }
@@ -28,12 +29,12 @@ class MMKVActivity : BaseActivity() {
     }
 
     fun readClick(view: View) {
-        ToastUtils.showLong(mmkv!!.getInt("name11",0).toString())
+        ToastUtils.showLong(mmkv!!.getString("name1"))
     }
     fun writeClick(view: View) {
         val start = System.currentTimeMillis()
-        for (i in 0..999) {
-            mmkv?.putInt("name$i", i)
+        for (i in 0..2) {
+            mmkv?.putString("name$i", "peakmain$i")
         }
 
 
