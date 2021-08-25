@@ -81,4 +81,14 @@ Java_com_peakmain_video_1audio_simple_mmkv_MMKV_putInt(JNIEnv *env, jobject thiz
     MMKV *kv = reinterpret_cast<MMKV *>(handle);
     kv->putInt(key, value);
     env->ReleaseStringUTFChars(key_, key);
+}extern "C"
+JNIEXPORT void JNICALL
+Java_com_peakmain_video_1audio_simple_mmkv_MMKV_putString(JNIEnv *env, jobject thiz, jlong handle,
+                                                          jstring key_, jstring value_) {
+    const char *key = env->GetStringUTFChars(key_, 0);
+    const char *value = env->GetStringUTFChars(value_, 0);
+    MMKV *kv = reinterpret_cast<MMKV *>(handle);
+    kv->putString(key, value);
+    env->ReleaseStringUTFChars(value_, value);
+    env->ReleaseStringUTFChars(key_, key);
 }

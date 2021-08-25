@@ -46,4 +46,8 @@ public class MMKV {
     private static native void mmkvInit(String rootDir);
     private native int getInt(long handle, String key, int defaultValue);
     private native void putInt(long handle, String key, int value);
+    private native void putString(long handle, String key, String value);
+    public void putString(@NotNull String key, @NotNull String value) {
+        putString(nativeHandle,key,value);
+    }
 }

@@ -43,7 +43,9 @@ public:
     ProtoBuf *m_output;
     //已经使用的长度  &
     int32_t m_actualSize = 0;
-    std::unordered_map<std::string, ProtoBuf*> m_dic;
+    std::unordered_map<std::string, ProtoBuf*> map;
+
+    void putString(const std::string &key,const std::string &value);
 };
 
 

@@ -47,7 +47,7 @@ void MMKV::loadFromFile() {
     if (m_actualSize > 0) {
         ProtoBuf inputBuffer(m_ptr + 4, m_actualSize);
         //清空
-        m_dic.clear();
+        map.clear();
         //已有的数据添加到Map
         while (!inputBuffer.isAtEnd()) {
             std::string key = inputBuffer.readString();
@@ -55,7 +55,7 @@ void MMKV::loadFromFile() {
             if (key.length() > 0) {
                 ProtoBuf *value = inputBuffer.readData();
                 if (value && value->length() > 0) {
-                    m_dic.emplace(key, value);
+                    map.emplace(key, value);
                 }
             }
         }
@@ -90,13 +90,19 @@ void MMKV::putInt(const std::string &key, int32_t value) {
     int32_t size = ProtoBuf::computeInt32Size(value);
     ProtoBuf *buf = new ProtoBuf(size);
     buf->writeRawInt(value);
-    m_dic.emplace(key, buf);
+    map.emplace(key, buf);
     appendDataWithKey(key, buf);
 }
-
+void MMKV::putString(const std::string &key,const std::string &value) {
+    int32_t size = value.length();
+    ProtoBuf *buf = new ProtoBuf(size);
+    buf->writeString(value);
+    map.emplace(key, buf);
+    appendDataWithKey(key, buf);
+}
 int32_t MMKV::getInt(std::string key, int32_t defaultValue) {
-    auto itr = m_dic.find(key);
-    if (itr != m_dic.end()) {
+    auto itr = map.find(key);
+    if (itr != map.end()) {
         ProtoBuf *buf = itr->second;
         int32_t returnValue = buf->readInt();
         //多次读取，将position还原为0
@@ -112,13 +118,13 @@ void MMKV::appendDataWithKey(std::string key, ProtoBuf *value) {
     if (itemSize > m_output->spaceLeft()) {
         //内存不够
         //计算map的大小
-        int32_t needSize = ProtoBuf::computeMapSize(m_dic);
+        int32_t needSize = ProtoBuf::computeMapSize(map);
         //加上总长度
         needSize += 4;
         //扩容的大小
         //计算每个item的平均长度
-        int32_t avgItemSize = needSize / std::max<int32_t>(1, m_dic.size());
-        int32_t futureUsage = avgItemSize * std::max<int32_t>(8, (m_dic.size() + 1) / 2);
+        int32_t avgItemSize = needSize / std::max<int32_t>(1, map.size());
+        int32_t futureUsage = avgItemSize * std::max<int32_t>(8, (map.size() + 1) / 2);
         if (needSize + futureUsage >= m_size) {
             int32_t oldSize = m_size;
             //如果在需要的与将来可能增加的加起来比扩容后还要大，继续扩容
@@ -141,8 +147,8 @@ void MMKV::appendDataWithKey(std::string key, ProtoBuf *value) {
         delete m_output;
         m_output = new ProtoBuf(m_ptr + 4,
                                 m_size - 4);
-        auto iter = m_dic.begin();
-        for (; iter != m_dic.end(); iter++) {
+        auto iter = map.begin();
+        for (; iter != map.end(); iter++) {
             auto k = iter->first;
             auto v = iter->second;
             m_output->writeString(k);
@@ -157,3 +163,5 @@ void MMKV::appendDataWithKey(std::string key, ProtoBuf *value) {
     }
 
 }
+
+
