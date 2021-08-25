@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <string>
 #include <unordered_map>
+#include <jni.h>
 #include "ProtoBuf.h"
 
 
@@ -46,6 +47,8 @@ public:
     std::unordered_map<std::string, ProtoBuf*> map;
 
     void putString(const std::string &key,const std::string &value);
+
+    std::string getString(std::string key);
 };
 
 

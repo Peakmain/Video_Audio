@@ -5,7 +5,8 @@
 #include <log.h>
 #include "../../include/mmkv/MMKV.h"
 
-int32_t DEFAULT_MMAP_SIZE =getpagesize();
+int32_t DEFAULT_MMAP_SIZE = getpagesize();
+
 void MMKV::initializeMMKV(const char *path) {
     g_rootDir = path;
     //创建文件夹
@@ -93,13 +94,15 @@ void MMKV::putInt(const std::string &key, int32_t value) {
     map.emplace(key, buf);
     appendDataWithKey(key, buf);
 }
-void MMKV::putString(const std::string &key,const std::string &value) {
+
+void MMKV::putString(const std::string &key, const std::string &value) {
     int32_t size = value.length();
     ProtoBuf *buf = new ProtoBuf(size);
     buf->writeString(value);
     map.emplace(key, buf);
     appendDataWithKey(key, buf);
 }
+
 int32_t MMKV::getInt(std::string key, int32_t defaultValue) {
     auto itr = map.find(key);
     if (itr != map.end()) {
@@ -110,6 +113,20 @@ int32_t MMKV::getInt(std::string key, int32_t defaultValue) {
         return returnValue;
     }
     return defaultValue;
+}
+
+std::string MMKV::getString(std::string key) {
+    auto itr = map.find(key);
+
+    if (itr != map.end()) {
+        ProtoBuf *buf = itr->second;
+        std::string returnValue = buf->readString();
+        LOGE("%s",returnValue.c_str());
+        //多次读取，将position还原为0
+        buf->restore();
+        return returnValue;
+    }
+    return NULL;
 }
 
 void MMKV::appendDataWithKey(std::string key, ProtoBuf *value) {
@@ -163,5 +180,7 @@ void MMKV::appendDataWithKey(std::string key, ProtoBuf *value) {
     }
 
 }
+
+
 
 

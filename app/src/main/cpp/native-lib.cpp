@@ -39,8 +39,8 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_peakmain_video_1audio_utils_crash_NativeCrashMonitor_nativeCrashCreate(JNIEnv *env,
                                                                                 jclass clazz) {
-    int *num = NULL;
-    *num = 100;
+/*    int *num = NULL;
+    *num = 100;*/
 }
 /**
  * MMKV
@@ -91,4 +91,14 @@ Java_com_peakmain_video_1audio_simple_mmkv_MMKV_putString(JNIEnv *env, jobject t
     kv->putString(key, value);
     env->ReleaseStringUTFChars(value_, value);
     env->ReleaseStringUTFChars(key_, key);
+}extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_peakmain_video_1audio_simple_mmkv_MMKV_getString(JNIEnv *env, jobject thiz, jlong handle,
+                                                          jstring key_) {
+    const char *key = env->GetStringUTFChars(key_, 0);
+    MMKV *kv = reinterpret_cast<MMKV *>(handle);
+    std::string value=kv->getString(key);
+    LOGE("%s",value.c_str());
+    env->ReleaseStringUTFChars(key_, key);
+    return env->NewStringUTF(value.c_str());
 }

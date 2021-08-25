@@ -47,7 +47,13 @@ public class MMKV {
     private native int getInt(long handle, String key, int defaultValue);
     private native void putInt(long handle, String key, int value);
     private native void putString(long handle, String key, String value);
+    private native String getString(long handle, String key);
     public void putString(@NotNull String key, @NotNull String value) {
         putString(nativeHandle,key,value);
+    }
+
+    @NotNull
+    public String getString(@NotNull String key) {
+        return getString(nativeHandle,key);
     }
 }

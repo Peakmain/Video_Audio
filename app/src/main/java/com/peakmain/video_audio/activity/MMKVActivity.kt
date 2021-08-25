@@ -28,7 +28,7 @@ class MMKVActivity : BaseActivity() {
     }
 
     fun readClick(view: View) {
-        ToastUtils.showLong(mmkv!!.getInt("peakmain", -1).toString())
+        ToastUtils.showLong(mmkv!!.getString("peakmain"))
     }
     fun writeClick(view: View) {
         val start = System.currentTimeMillis()
@@ -36,7 +36,6 @@ class MMKVActivity : BaseActivity() {
             mmkv?.putInt("name$i", i)
         }*/
         mmkv?.putInt("peakmain",11)
-        mmkv?.putInt("treasure",23)
         mmkv?.putString("treasure","ceshi")
 
         val time = System.currentTimeMillis() - start
