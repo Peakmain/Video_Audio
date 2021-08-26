@@ -1,2 +1,3 @@
+include ':javaLib'
 include ':app'
 rootProject.name = "Video_Audio"
