@@ -23,6 +23,7 @@ class MainActivity : BaseActivity() {
         mNavigationBuilder!!.setTitleText("首页").create()
         checkPermission()
     }
+
     fun checkPermission(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -37,15 +38,20 @@ class MainActivity : BaseActivity() {
         }
         return false
     }
+
     override fun initData() {
         mData.add("simple的使用")
+        mData.add("H265实现手机投屏")
         val adapter = BaseRecyclerStringAdapter(this, data = mData)
         recycler_view.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-                when (position){
-                    0->{
-                    startActivity(Intent(this@MainActivity,SimpleActivity::class.java))
+                when (position) {
+                    0 -> {
+                        startActivity(Intent(this@MainActivity, SimpleActivity::class.java))
+                    }
+                    1->{
+
                     }
                 }
             }

@@ -54,6 +54,7 @@ class SimpleActivity : BaseActivity() {
         mData.add("MediaCodec实现H264音视频转成图片(单张)")
         mData.add("MMKV的读写")
         mData.add("MediaCodec实现屏幕录制")
+        mData.add("Camera实现预览编码")
         val adapter = BaseRecyclerStringAdapter(this, data = mData)
         recycler_view.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
@@ -76,6 +77,10 @@ class SimpleActivity : BaseActivity() {
                     3 -> {
                         val intent: Intent = mMediaProjectionManager.createScreenCaptureIntent()
                         startActivityForResult(intent, screenRequestCode)
+                    }
+                    4->{
+                        val intent = Intent(this@SimpleActivity, CameraActivity::class.java)
+                        startActivity(intent)
                     }
                 }
             }

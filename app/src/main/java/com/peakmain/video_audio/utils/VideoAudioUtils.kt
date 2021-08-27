@@ -24,13 +24,15 @@ object VideoAudioUtils {
         buf = bos.toByteArray()
         return buf
     }
+
     @JvmStatic
     @Throws(IOException::class)
-    fun copyAssets(context:Context, assetsName: String, path: String) {
+    fun copyAssets(context: Context, assetsName: String, path: String) {
         val assetFileDescriptor = context.assets.openFd(assetsName)
         val from =
             FileInputStream(assetFileDescriptor.fileDescriptor).channel
         val to = FileOutputStream(path).channel
         from.transferTo(assetFileDescriptor.startOffset, assetFileDescriptor.length, to)
     }
+
 }
