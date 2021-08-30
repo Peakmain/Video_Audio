@@ -56,7 +56,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.Peakmain:BasicUI:1.1.0-androidx'
-
+    implementation "androidx.camera:camera-core:1.0.0-alpha05"
+    implementation "androidx.camera:camera-camera2:1.0.0-alpha05"
 }
 repositories {
     mavenCentral()

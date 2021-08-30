@@ -12,9 +12,9 @@ import com.peakmain.ui.utils.PermissionUtils
 import com.peakmain.video_audio.R
 import com.peakmain.video_audio.basic.BaseActivity
 import com.peakmain.video_audio.utils.Camera2Helper
+import com.peakmain.video_audio.utils.CameraXHelper
 import com.peakmain.video_audio.utils.FileUtils
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_h264_player.*
 
 /**
  * author ：Peakmain
@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_h264_player.*
  */
 class CameraActivity : BaseActivity(), TextureView.SurfaceTextureListener {
     lateinit var camera2Helper: Camera2Helper
+    lateinit var cameraXHelper: CameraXHelper
     override fun getLayoutId(): Int {
         return R.layout.activity_camera
     }
@@ -69,9 +70,12 @@ class CameraActivity : BaseActivity(), TextureView.SurfaceTextureListener {
     }
 
     private fun initCamera() {
-        camera2Helper = Camera2Helper(this)
-        camera2Helper.start(texture_preview, 0)
-
+/*        camera2Helper = Camera2Helper(this)
+        camera2Helper.start(texture_preview, 0)*/
+        cameraXHelper = CameraXHelper(this, texture_preview)
+        cameraXHelper.setCameraXListener { y, u, v, size, stride ->
+            onPreview(y, u, v, size, stride)
+        }
     }
 
     private var nv21
@@ -114,8 +118,8 @@ class CameraActivity : BaseActivity(), TextureView.SurfaceTextureListener {
             val outputBuffer = mediaCodec!!.getOutputBuffer(outIndex)
             val ba = ByteArray(outputBuffer.remaining())
             outputBuffer[ba]
-            FileUtils.writeContent(ba, "Camera2.txt")
-            FileUtils.writeBytes(ba, "Camera2.h264")
+            FileUtils.writeContent(ba, "Camera.txt")
+            FileUtils.writeBytes(ba, "Camera.h264")
             mediaCodec?.releaseOutputBuffer(outIndex, false)
         }
     }
@@ -152,6 +156,12 @@ class CameraActivity : BaseActivity(), TextureView.SurfaceTextureListener {
 
     fun cameraClick(view: View) {
         surface.startCaptrue()
+    }
+
+    fun cameraXClick(view: View) {
+       texture_preview.post{
+           cameraXHelper.startCamera()
+       }
     }
 
 }
