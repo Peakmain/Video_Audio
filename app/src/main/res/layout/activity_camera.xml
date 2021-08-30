@@ -3,18 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:context=".activity.CameraActivity"
     android:layout_height="match_parent"
     >
     <com.peakmain.video_audio.widget.CameraSurface
         android:id="@+id/surface"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent" />
-
+    <TextureView
+        android:id="@+id/texture_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <com.peakmain.ui.widget.ShapeTextView
        style="@style/stv_basic_style"
         app:shapeTvRadius="@dimen/dimen_3"
         app:shapeTvBackgroundColor="@color/color_2F73F6"
         android:onClick="cameraClick"
         android:text="camera拍照"/>
-
+    <com.peakmain.ui.widget.ShapeTextView
+        style="@style/stv_basic_style"
+        app:shapeTvRadius="@dimen/dimen_3"
+        app:shapeTvBackgroundColor="@color/color_2F73F6"
+        android:onClick="camera2Click"
+        android:text="camera2实现直播"/>
 </RelativeLayout>

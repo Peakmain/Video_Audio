@@ -1,8 +1,6 @@
 package com.peakmain.video_audio.widget;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
@@ -15,8 +13,6 @@ import android.view.SurfaceView;
 import com.peakmain.ui.utils.ToastUtils;
 import com.peakmain.video_audio.utils.FileUtils;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
