@@ -42,7 +42,6 @@ public class SocketAcceptLive {
         public CustomWebSocketClient(URI uri) {
             super(uri);
         }
-
         @Override
         public void onOpen(ServerHandshake handshakedata) {
             Log.e(BuildConfig.TAG, "SocketAcceptLive打开 socket  onOpen: ");
