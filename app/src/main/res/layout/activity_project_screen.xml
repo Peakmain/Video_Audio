@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="vertical"
-    tools:context=".activity.ProjectScreenActivity">
+    tools:context=".activity.ProjectScreenAcceptActivity">
 
     <SurfaceView
         android:id="@+id/surface_view"
-        android:layout_width="@dimen/dimen_640"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_360"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,31 +18,4 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
-    <com.peakmain.ui.widget.ShapeTextView
-        android:layout_width="@dimen/dimen_200"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dimen_10"
-        android:onClick="h265ProjectScreenSend"
-        android:paddingTop="@dimen/dimen_5"
-        android:paddingBottom="@dimen/dimen_5"
-        android:text="H265投屏(发送)"
-        android:textColor="@android:color/white"
-        app:shapeTvBackgroundColor="@color/color_2F73F6"
-        app:shapeTvRadius="@dimen/dimen_5" />
-
-    <com.peakmain.ui.widget.ShapeTextView
-        android:layout_width="@dimen/dimen_200"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dimen_10"
-        android:onClick="h265ProjectScreenAccept"
-        android:paddingTop="@dimen/dimen_5"
-        android:paddingBottom="@dimen/dimen_5"
-        android:text="H265投屏(接受)"
-        android:textColor="@android:color/white"
-        app:shapeTvBackgroundColor="@color/color_2F73F6"
-        app:shapeTvRadius="@dimen/dimen_5" />
 </LinearLayout>
