@@ -20,20 +20,27 @@ import java.nio.ByteBuffer;
  */
 public class SocketAcceptLive {
 
+    private final int mPort;
     private SocketCallback mSocketCallback;
     private CustomWebSocketClient mWebSocketClient;
 
-    public SocketAcceptLive(SocketCallback mSocketCallback) {
+    public SocketAcceptLive(SocketCallback mSocketCallback,int port) {
         this.mSocketCallback = mSocketCallback;
+        this.mPort=port;
     }
 
     public void start() {
         try {
-            URI url = new URI("ws://10.0.30.57:14004");
+            URI url = new URI("ws://10.0.29.121:"+mPort);
             mWebSocketClient = new CustomWebSocketClient(url);
             mWebSocketClient.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
+        }
+    }
+    public void sendData(byte[] bytes) {
+        if (mWebSocketClient!=null&&(mWebSocketClient.isOpen())) {
+            mWebSocketClient.send(bytes);
         }
     }
 

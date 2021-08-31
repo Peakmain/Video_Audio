@@ -23,12 +23,21 @@ public class WebSocketSendLive {
     int mPort;
     private WebSocket mWebSocket;
     CodecLiveH265 mCodecLiveH265;
+    private SocketCallback socketCallback;
+
+    public WebSocketSendLive(SocketCallback socketCallback) {
+        this.socketCallback = socketCallback;
+    }
 
     public void start(MediaProjection mediaProjection) {
         //启动服务器
         mWebSocketServer.start();
         mCodecLiveH265 = new CodecLiveH265(this, mediaProjection);
         mCodecLiveH265.startLive();
+    }
+
+    public void start() {
+        mWebSocketServer.start();
     }
 
     public void close() {
@@ -64,7 +73,10 @@ public class WebSocketSendLive {
         }
 
         @Override
-        public void onMessage(WebSocket conn, ByteBuffer message) {
+        public void onMessage(WebSocket conn, ByteBuffer bytes) {
+            byte[] buf = new byte[bytes.remaining()];
+            bytes.get(buf);
+            socketCallback.callBack(buf);
         }
 
         @Override
@@ -87,5 +99,9 @@ public class WebSocketSendLive {
         if (mWebSocket != null && mWebSocket.isOpen()) {
             mWebSocket.send(bytes);
         }
+    }
+
+    public interface SocketCallback {
+        void callBack(byte[] data);
     }
 }

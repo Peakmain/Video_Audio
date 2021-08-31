@@ -32,7 +32,7 @@ class ProjectScreenActivity : BaseActivity(), SocketAcceptLive.SocketCallback {
     private val mHeight: Int = SizeUtils.screenHeight
     lateinit var mMediaProjectionManager: MediaProjectionManager
     private lateinit var mWebSocketLive: WebSocketSendLive
-    private val mPort = 14004
+    private val mPort = 12345
     override fun getLayoutId(): Int {
         return R.layout.activity_project_screen
     }
@@ -63,7 +63,7 @@ class ProjectScreenActivity : BaseActivity(), SocketAcceptLive.SocketCallback {
     }
 
     private fun initClientSocket() {
-        val screenLive = SocketAcceptLive(this)
+        val screenLive = SocketAcceptLive(this,mPort)
         screenLive.start()
     }
 
