@@ -97,10 +97,10 @@ public class FileUtils {
             uIndex += 2;
         }
     }
-    public static byte[] nv21RotateTo90(byte[] nv21_data, byte[] nv21_rotated, int width, int height)
+    public static byte[] nv21RotateTo90(byte[] data, byte[] output, int width, int height)
     {
-        int y_size = width * height;
-        int buffser_size = y_size * 3 / 2;
+        int yLen = width * height;
+        int buffserSize = yLen * 3 / 2;
 
         int i = 0;
         int startPos = (height - 1)*width;
@@ -109,26 +109,26 @@ public class FileUtils {
             int offset = startPos;
             for (int y = height - 1; y >= 0; y--)
             {
-                nv21_rotated[i] = nv21_data[offset + x];
+                output[i] = data[offset + x];
                 i++;
                 offset -= width;
             }
         }
         // Rotate the U and V color components
-        i = buffser_size - 1;
+        i = buffserSize - 1;
         for (int x = width - 1; x > 0; x = x - 2)
         {
-            int offset = y_size;
+            int offset = yLen;
             for (int y = 0; y < height / 2; y++)
             {
-                nv21_rotated[i] = nv21_data[offset + x];
+                output[i] = data[offset + x];
                 i--;
-                nv21_rotated[i] = nv21_data[offset + (x - 1)];
+                output[i] = data[offset + (x - 1)];
                 i--;
                 offset += width;
             }
         }
-        return nv21_rotated;
+        return output;
     }
     /**
      * 旋转90度
@@ -148,44 +148,5 @@ public class FileUtils {
                 output[k++] = data[yLen + width * i + j + 1];
             }
         }
-    }
-    /***
-     * YUV420 转化成 RGB
-     */
-    public static int[] decodeYUV420SP(byte[] yuv420sp, int width, int height)
-    {
-        final int frameSize = width * height;
-        int rgb[] = new int[frameSize];
-        for (int j = 0, yp = 0; j < height; j++) {
-            int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
-            for (int i = 0; i < width; i++, yp++) {
-                int y = (0xff & ((int) yuv420sp[yp])) - 16;
-                if (y < 0)
-                    y = 0;
-                if ((i & 1) == 0) {
-                    v = (0xff & yuv420sp[uvp++]) - 128;
-                    u = (0xff & yuv420sp[uvp++]) - 128;
-                }
-                int y1192 = 1192 * y;
-                int r = (y1192 + 1634 * v);
-                int g = (y1192 - 833 * v - 400 * u);
-                int b = (y1192 + 2066 * u);
-                if (r < 0)
-                    r = 0;
-                else if (r > 262143)
-                    r = 262143;
-                if (g < 0)
-                    g = 0;
-                else if (g > 262143)
-                    g = 262143;
-                if (b < 0)
-                    b = 0;
-                else if (b > 262143)
-                    b = 262143;
-                rgb[yp] = 0xff000000 | ((r << 6) & 0xff0000)
-                        | ((g >> 2) & 0xff00) | ((b >> 10) & 0xff);
-            }
-        }
-        return rgb;
     }
 }

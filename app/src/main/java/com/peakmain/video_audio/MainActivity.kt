@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import com.peakmain.ui.recyclerview.listener.OnItemClickListener
+import com.peakmain.video_audio.activity.ProjectScreenActivity
 import com.peakmain.video_audio.activity.SimpleActivity
 import com.peakmain.video_audio.basic.BaseActivity
 import com.peakmain.video_audio.basic.BaseRecyclerStringAdapter
@@ -51,7 +52,7 @@ class MainActivity : BaseActivity() {
                         startActivity(Intent(this@MainActivity, SimpleActivity::class.java))
                     }
                     1->{
-
+                        startActivity(Intent(this@MainActivity, ProjectScreenActivity::class.java))
                     }
                 }
             }
