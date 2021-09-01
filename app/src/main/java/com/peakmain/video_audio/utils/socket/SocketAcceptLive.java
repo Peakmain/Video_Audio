@@ -20,18 +20,16 @@ import java.nio.ByteBuffer;
  */
 public class SocketAcceptLive {
 
-    private final int mPort;
     private SocketCallback mSocketCallback;
     private CustomWebSocketClient mWebSocketClient;
 
-    public SocketAcceptLive(SocketCallback mSocketCallback,int port) {
+    public SocketAcceptLive(SocketCallback mSocketCallback) {
         this.mSocketCallback = mSocketCallback;
-        this.mPort=port;
     }
 
     public void start() {
         try {
-            URI url = new URI("ws://10.0.29.121:"+mPort);
+            URI url = new URI("ws://10.0.29.121:14430");
             mWebSocketClient = new CustomWebSocketClient(url);
             mWebSocketClient.connect();
         } catch (URISyntaxException e) {

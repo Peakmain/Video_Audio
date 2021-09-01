@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
  * describe：服务端
  */
 public class WebSocketSendLive {
-    int mPort;
     private WebSocket mWebSocket;
     CodecLiveH265 mCodecLiveH265;
     private SocketCallback socketCallback;
@@ -52,11 +51,10 @@ public class WebSocketSendLive {
 
     }
 
-    public WebSocketSendLive(int port) {
-        this.mPort = port;
+    public WebSocketSendLive() {
     }
 
-    private final WebSocketServer mWebSocketServer = new WebSocketServer(new InetSocketAddress(mPort)) {
+    private final WebSocketServer mWebSocketServer = new WebSocketServer(new InetSocketAddress(14430)) {
         @Override
         public void onOpen(WebSocket conn, ClientHandshake handshake) {
             WebSocketSendLive.this.mWebSocket = conn;
@@ -86,7 +84,7 @@ public class WebSocketSendLive {
 
         @Override
         public void onStart() {
-            Log.e(BuildConfig.TAG, "onStart: 开启 socket ");
+            Log.e(BuildConfig.TAG, "onStart: 开启 socket: ");
         }
     };
 

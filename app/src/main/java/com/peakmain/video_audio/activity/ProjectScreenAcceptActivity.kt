@@ -23,7 +23,6 @@ class ProjectScreenAcceptActivity : BaseActivity(), SocketAcceptLive.SocketCallb
     lateinit var mMediaCodec: MediaCodec
     private val mWidth: Int = SizeUtils.screenWidth
     private val mHeight: Int = SizeUtils.screenHeight
-    private val mPort = 12345
     override fun getLayoutId(): Int {
         return R.layout.activity_project_screen
     }
@@ -56,7 +55,7 @@ class ProjectScreenAcceptActivity : BaseActivity(), SocketAcceptLive.SocketCallb
     }
 
     private fun initSocket() {
-        val screenLive = SocketAcceptLive(this,mPort)
+        val screenLive = SocketAcceptLive(this)
         screenLive.start()
     }
 

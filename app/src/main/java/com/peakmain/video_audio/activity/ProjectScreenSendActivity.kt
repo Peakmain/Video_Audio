@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_project_screen.*
 class ProjectScreenSendActivity : BaseActivity() {
     lateinit var mMediaProjectionManager: MediaProjectionManager
     private lateinit var mWebSocketLive: WebSocketSendLive
-    private val mPort = 12345
     override fun getLayoutId(): Int {
         return R.layout.activity_project_screen
     }
@@ -52,7 +51,7 @@ class ProjectScreenSendActivity : BaseActivity() {
             val mediaProjection: MediaProjection =
                 mMediaProjectionManager.getMediaProjection(resultCode, data)
                     ?: return
-            mWebSocketLive = WebSocketSendLive(mPort)
+            mWebSocketLive = WebSocketSendLive()
             mWebSocketLive.start(mediaProjection)
         }
     }
