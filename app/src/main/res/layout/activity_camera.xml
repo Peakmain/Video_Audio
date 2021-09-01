@@ -9,12 +9,12 @@
     <com.peakmain.video_audio.widget.CameraSurface
         android:id="@+id/surface"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:layout_height="match_parent" />
 
     <TextureView
         android:id="@+id/texture_preview"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent" />
     <LinearLayout
         android:layout_width="match_parent"

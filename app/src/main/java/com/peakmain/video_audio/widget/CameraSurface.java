@@ -27,7 +27,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     private Camera mCamera;
     private Camera.Size size;
     byte[] mBuffer;
-
+    byte[] nv21_rotated;
     public CameraSurface(Context context) {
         this(context, null);
     }
@@ -56,6 +56,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(getHolder());
             mCamera.setDisplayOrientation(90);
             mBuffer = new byte[size.width * size.height * 3 / 2];
+            nv21_rotated = new byte[size.width * size.height * 3 / 2];
             mCamera.addCallbackBuffer(mBuffer);
             mCamera.setPreviewCallbackWithBuffer(this);
             mCamera.startPreview();
@@ -74,10 +75,10 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         if (isCaptrue) {
-            byte[] nv12 = FileUtils.nv21toNV12(data);
-            FileUtils.portraitData2Raw(nv12, mBuffer, size.width, size.height);
+            //nv21_rotated = FileUtils.nv21toNV12(data);
             isCaptrue = false;
-            captrue(mBuffer);
+            nv21_rotated = FileUtils.nv21RotateTo90(data, nv21_rotated, size.width, size.height);
+            captrue(nv21_rotated);
             ToastUtils.showLong("保存成功");
         }
         mCamera.addCallbackBuffer(data);
