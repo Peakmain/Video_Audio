@@ -67,8 +67,9 @@ public class FileUtils {
         }
     }
 
+    static byte[] nv12;
+
     public static byte[] nv21toNV12(byte[] nv21) {
-        byte[] nv12;
         int size = nv21.length;
         nv12 = new byte[size];
         int len = size * 2 / 3;
@@ -97,18 +98,16 @@ public class FileUtils {
             uIndex += 2;
         }
     }
-    public static byte[] nv21RotateTo90(byte[] data, byte[] output, int width, int height)
-    {
+
+    public static byte[] nv21RotateTo90(byte[] data, byte[] output, int width, int height) {
         int yLen = width * height;
         int buffserSize = yLen * 3 / 2;
 
         int i = 0;
-        int startPos = (height - 1)*width;
-        for (int x = 0; x < width; x++)
-        {
+        int startPos = (height - 1) * width;
+        for (int x = 0; x < width; x++) {
             int offset = startPos;
-            for (int y = height - 1; y >= 0; y--)
-            {
+            for (int y = height - 1; y >= 0; y--) {
                 output[i] = data[offset + x];
                 i++;
                 offset -= width;
@@ -116,11 +115,9 @@ public class FileUtils {
         }
         // Rotate the U and V color components
         i = buffserSize - 1;
-        for (int x = width - 1; x > 0; x = x - 2)
-        {
+        for (int x = width - 1; x > 0; x = x - 2) {
             int offset = yLen;
-            for (int y = 0; y < height / 2; y++)
-            {
+            for (int y = 0; y < height / 2; y++) {
                 output[i] = data[offset + x];
                 i--;
                 output[i] = data[offset + (x - 1)];
@@ -130,6 +127,7 @@ public class FileUtils {
         }
         return output;
     }
+
     /**
      * 旋转90度
      */

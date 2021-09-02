@@ -28,6 +28,7 @@ class CameraHelper(surfaceView: SurfaceView) : Camera.PreviewCallback {
     private lateinit var size: Camera.Size
     private lateinit var mBuffer: ByteArray
     private lateinit var nv21_rotated: ByteArray
+    private lateinit var nv12: ByteArray
 
     private var mCameraListener: ((ByteArray?, size: Camera.Size) -> Unit)? = null
     private lateinit var mediaCodec: MediaCodec
@@ -42,9 +43,9 @@ class CameraHelper(surfaceView: SurfaceView) : Camera.PreviewCallback {
 
     private fun initMediaCodec() {
         try {
-            mediaCodec = MediaCodec.createEncoderByType("video/avc")
+            mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
             val format = MediaFormat.createVideoFormat(
-                "video/avc",
+                MediaFormat.MIMETYPE_VIDEO_AVC,
                 size.height, size.width
             )
             LogUtils.e(
@@ -56,7 +57,7 @@ class CameraHelper(surfaceView: SurfaceView) : Camera.PreviewCallback {
                 MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible
             )
             format.setInteger(MediaFormat.KEY_FRAME_RATE, 15)
-            format.setInteger(MediaFormat.KEY_BIT_RATE, 12_000_000)
+            format.setInteger(MediaFormat.KEY_BIT_RATE, 4_000_000)
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2) //2s一个I帧
             mediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
             mediaCodec.start()
@@ -74,6 +75,7 @@ class CameraHelper(surfaceView: SurfaceView) : Camera.PreviewCallback {
         mCamera.setDisplayOrientation(90)
         mBuffer = ByteArray(size.width * size.height * 3 / 2)
         nv21_rotated = ByteArray(size.width * size.height * 3 / 2)
+        nv12 = ByteArray(size.width * size.height * 3 / 2)
         mCamera.addCallbackBuffer(mBuffer)
         mCamera.setPreviewCallbackWithBuffer(this)
         mCamera.startPreview()
@@ -88,36 +90,22 @@ class CameraHelper(surfaceView: SurfaceView) : Camera.PreviewCallback {
 
     override fun onPreviewFrame(data: ByteArray?, camera: Camera?) {
         if (isCaptrue) {
-            nv21_rotated = ByteArray(data!!.size)
+            nv12 = FileUtils.nv21toNV12(data)
             //旋转九十度
-            nv21_rotated = FileUtils.nv21RotateTo90(
-                data,
+            FileUtils.portraitData2Raw(
+                nv12,
                 nv21_rotated,
                 size.width,
                 size.height
             )
-            val temp = nv21toNV12(nv21_rotated)
+
             if (mCameraListener != null) {
-                mCameraListener?.invoke(temp, size)
+                mCameraListener?.invoke(nv21_rotated, size)
             }
         }
         mCamera.addCallbackBuffer(data)
     }
 
-    private lateinit var nv12: ByteArray
-    fun nv21toNV12(nv21: ByteArray): ByteArray {
-        val size = nv21.size
-        nv12 = ByteArray(size)
-        val len = size * 2 / 3
-        System.arraycopy(nv21, 0, nv12, 0, len)
-        var i = len
-        while (i < size - 1) {
-            nv12[i] = nv21[i + 1]
-            nv12[i + 1] = nv21[i]
-            i += 2
-        }
-        return nv12
-    }
 
     private fun captrue(bytes: ByteArray, index: Int = 0) {
         val fileName = "Camera_$index.jpg"

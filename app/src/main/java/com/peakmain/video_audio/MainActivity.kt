@@ -5,9 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import com.peakmain.ui.recyclerview.listener.OnItemClickListener
-import com.peakmain.video_audio.activity.ProjectScreenAcceptActivity
-import com.peakmain.video_audio.activity.ProjectScreenSendActivity
-import com.peakmain.video_audio.activity.SimpleActivity
+import com.peakmain.video_audio.activity.*
 import com.peakmain.video_audio.basic.BaseActivity
 import com.peakmain.video_audio.basic.BaseRecyclerStringAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,6 +41,8 @@ class MainActivity : BaseActivity() {
         mData.add("simple的使用")
         mData.add("H265实现手机投屏(接收端)")
         mData.add("H265实现手机投屏(发送端)")
+        mData.add("H265音视频通话(发送端)")
+        mData.add("H265音视频通话(接受端)")
         val adapter = BaseRecyclerStringAdapter(this, data = mData)
         recycler_view.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
@@ -51,11 +51,37 @@ class MainActivity : BaseActivity() {
                     0 -> {
                         startActivity(Intent(this@MainActivity, SimpleActivity::class.java))
                     }
-                    1->{
-                        startActivity(Intent(this@MainActivity, ProjectScreenAcceptActivity::class.java))
+                    1 -> {
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                ProjectScreenAcceptActivity::class.java
+                            )
+                        )
                     }
-                    2->{
-                        startActivity(Intent(this@MainActivity, ProjectScreenSendActivity::class.java))
+                    2 -> {
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                ProjectScreenSendActivity::class.java
+                            )
+                        )
+                    }
+                    3 -> {
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                VideoSendVideoCallActivity::class.java
+                            )
+                        )
+                    }
+                    4 -> {
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                VideoAcceptVideoCallActivity::class.java
+                            )
+                        )
                     }
                 }
             }

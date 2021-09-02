@@ -31,6 +31,8 @@
         <activity android:name=".activity.Camera2XActivity" />
         <activity android:name=".activity.ProjectScreenAcceptActivity" />
         <activity android:name=".activity.ProjectScreenSendActivity" />
+        <activity android:name=".activity.VideoSendVideoCallActivity" />
+        <activity android:name=".activity.VideoAcceptVideoCallActivity" />
     </application>
 
 </manifest>
