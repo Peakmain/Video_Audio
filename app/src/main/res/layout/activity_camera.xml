@@ -6,43 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".activity.CameraActivity">
 
-    <com.peakmain.video_audio.widget.CameraSurface
-        android:id="@+id/surface"
+    <SurfaceView
+        android:id="@+id/surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <TextureView
-        android:id="@+id/texture_preview"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:orientation="vertical">
-
-        <com.peakmain.ui.widget.ShapeTextView
-            style="@style/stv_basic_style"
-            android:onClick="cameraClick"
-            android:text="camera拍照"
-            android:layout_gravity="start"
-            app:shapeTvBackgroundColor="@color/color_2F73F6"
-            app:shapeTvRadius="@dimen/dimen_3" />
-
-        <com.peakmain.ui.widget.ShapeTextView
-            style="@style/stv_basic_style"
-            android:onClick="camera2Click"
-            android:text="camera2实现直播"
-            android:layout_gravity="start"
-            app:shapeTvBackgroundColor="@color/color_2F73F6"
-            app:shapeTvRadius="@dimen/dimen_3" />
-        <com.peakmain.ui.widget.ShapeTextView
-            style="@style/stv_basic_style"
-            android:onClick="cameraXClick"
-            android:text="cameraX实现直播"
-            android:layout_gravity="start"
-            app:shapeTvBackgroundColor="@color/color_2F73F6"
-            app:shapeTvRadius="@dimen/dimen_3" />
-    </LinearLayout>
+    <com.peakmain.ui.widget.ShapeTextView
+        style="@style/stv_basic_style"
+        android:onClick="cameraClick"
+        android:text="camera录像"
+        android:layout_gravity="start"
+        app:shapeTvBackgroundColor="@color/color_2F73F6"
+        app:shapeTvRadius="@dimen/dimen_3" />
 </RelativeLayout>

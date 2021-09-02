@@ -55,6 +55,7 @@ class SimpleActivity : BaseActivity() {
         mData.add("MMKV的读写")
         mData.add("MediaCodec实现屏幕录制")
         mData.add("Camera实现预览编码")
+        mData.add("CameraX和Camera2实现预览编码")
         val adapter = BaseRecyclerStringAdapter(this, data = mData)
         recycler_view.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
@@ -80,6 +81,10 @@ class SimpleActivity : BaseActivity() {
                     }
                     4->{
                         val intent = Intent(this@SimpleActivity, CameraActivity::class.java)
+                        startActivity(intent)
+                    }
+                    5->{
+                        val intent = Intent(this@SimpleActivity, Camera2XActivity::class.java)
                         startActivity(intent)
                     }
                 }
