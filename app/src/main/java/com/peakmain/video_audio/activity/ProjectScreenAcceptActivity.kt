@@ -30,8 +30,8 @@ class ProjectScreenAcceptActivity : BaseActivity(), SocketAcceptLive.SocketCallb
     override fun initView() {
         mNavigationBuilder?.setTitleText("H265实现手机投屏(接收端)")?.create()
         surface_view.holder.addCallback(object : BasicSurfaceHolderCallback() {
-            override fun surfaceCreated(holder: SurfaceHolder?) {
-                mSurface = holder?.surface
+            override fun surfaceCreated(holder: SurfaceHolder) {
+                mSurface = holder.surface
                 initSocket()
                 initDecoder(mSurface)
             }
@@ -69,10 +69,14 @@ class ProjectScreenAcceptActivity : BaseActivity(), SocketAcceptLive.SocketCallb
         val index = mMediaCodec.dequeueInputBuffer(10000)
         if (index >= 0) {
             val inputBuffer = mMediaCodec.getInputBuffer(index)
-            inputBuffer.clear()
-            inputBuffer.put(data, 0, data!!.size)
-            //通知dsp芯片帮忙解码
-            mMediaCodec.queueInputBuffer(index, 0, data.size, System.currentTimeMillis(), 0)
+            inputBuffer?.let {
+                data?.let {
+                    inputBuffer.clear()
+                    inputBuffer.put(data, 0, data.size)
+                    //通知dsp芯片帮忙解码
+                    mMediaCodec.queueInputBuffer(index, 0, data.size, System.currentTimeMillis(), 0)
+                }
+            }
         }
         //取出数据
         val bufferInfo = MediaCodec.BufferInfo()

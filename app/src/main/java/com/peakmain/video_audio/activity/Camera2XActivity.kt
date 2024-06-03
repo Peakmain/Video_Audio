@@ -55,16 +55,16 @@ class Camera2XActivity : BaseActivity(), TextureView.SurfaceTextureListener {
     }
 
 
-    override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
+    override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture, width: Int, height: Int) {
 
     }
 
-    override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {
+    override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
     }
 
-    override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean = false
+    override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean = false
 
-    override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
+    override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         // 打开摄像头
         initCamera()
     }
@@ -108,19 +108,21 @@ class Camera2XActivity : BaseActivity(), TextureView.SurfaceTextureListener {
         //通知dsp去解析
         if (inIndex >= 0) {
             val byteBuffer = mediaCodec!!.getInputBuffer(inIndex)
-            byteBuffer.clear()
-            byteBuffer.put(temp, 0, temp.size)
+            byteBuffer?.clear()
+            byteBuffer?.put(temp, 0, temp.size)
             mediaCodec?.queueInputBuffer(inIndex, 0, temp.size, 0, 0)
         }
         //取出
         val outIndex = mediaCodec!!.dequeueOutputBuffer(bufferInfo, 1000)
         if (outIndex >= 0) {
             val outputBuffer = mediaCodec!!.getOutputBuffer(outIndex)
-            val ba = ByteArray(outputBuffer.remaining())
-            outputBuffer[ba]
-            FileUtils.writeContent(ba, "Camera.txt")
-            FileUtils.writeBytes(ba, "Camera.h264")
-            mediaCodec?.releaseOutputBuffer(outIndex, false)
+            outputBuffer?.let {
+                val ba = ByteArray(outputBuffer.remaining())
+                outputBuffer[ba]
+                FileUtils.writeContent(ba, "Camera.txt")
+                FileUtils.writeBytes(ba, "Camera.h264")
+                mediaCodec?.releaseOutputBuffer(outIndex, false)
+            }
         }
     }
 

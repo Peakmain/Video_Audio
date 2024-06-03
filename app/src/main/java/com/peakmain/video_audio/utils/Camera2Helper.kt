@@ -58,13 +58,17 @@ class Camera2Helper(private val mContext: Context) {
                 characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
             //最合适的尺寸
             mPreviewSize = getBestSupportedSize(
-                ArrayList(
-                    listOf(
-                        *map.getOutputSizes(
-                            SurfaceTexture::class.java
+                ArrayList<Size>().apply {
+                    map?.let {
+                        addAll(
+                            listOf(
+                                *map.getOutputSizes(
+                                    SurfaceTexture::class.java
+                                )
+                            )
                         )
-                    )
-                )
+                    }
+                }
             )
             mImageReader = ImageReader.newInstance(
                 mPreviewSize.width, mPreviewSize.height
@@ -126,9 +130,9 @@ class Camera2Helper(private val mContext: Context) {
      */
     private fun createCameraPreviewSession() {
         try {
-            val texture = mTextureView!!.surfaceTexture
+            val texture = mTextureView?.surfaceTexture
             //设置预览的宽高
-            texture.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height)
+            texture?.setDefaultBufferSize(mPreviewSize.width, mPreviewSize.height)
             val surface = Surface(texture)
             // 创建预览需要的CaptureRequest.Builder
             mPreviewRequestBuilder =

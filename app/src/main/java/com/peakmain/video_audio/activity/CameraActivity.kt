@@ -25,17 +25,21 @@ class CameraActivity : BaseActivity() {
             val inIndex = mediaCodec.dequeueInputBuffer(10000)
             if (inIndex >= 0) {
                 val byteBuffer = mediaCodec.getInputBuffer(inIndex)
-                byteBuffer.clear()
-                byteBuffer.put(data, 0, data!!.size)
-                mediaCodec.queueInputBuffer(inIndex, 0, data.size, 0, 0)
+                data?.let {
+                    byteBuffer?.clear()
+                    byteBuffer?.put(data, 0, data.size)
+                    mediaCodec.queueInputBuffer(inIndex, 0, data.size, 0, 0)
+                }
             }
             val outIndex = mediaCodec.dequeueOutputBuffer(info, 10000)
             if (outIndex >= 0) {
                 val byteBuffer = mediaCodec.getOutputBuffer(outIndex)
-                val ba = ByteArray(byteBuffer.remaining())
-                byteBuffer[ba]
-                FileUtils.writeBytes(ba, "Camera.h264")
-                mediaCodec.releaseOutputBuffer(outIndex,false)
+                byteBuffer?.let {
+                    val ba = ByteArray(byteBuffer.remaining())
+                    byteBuffer[ba]
+                    FileUtils.writeBytes(ba, "Camera.h264")
+                    mediaCodec.releaseOutputBuffer(outIndex,false)
+                }
             }
         }
     }

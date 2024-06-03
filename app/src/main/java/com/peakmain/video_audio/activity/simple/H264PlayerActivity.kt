@@ -38,7 +38,7 @@ class H264PlayerActivity : BaseActivity() {
     private fun initSurface() {
         val surfaceHolder = surfaceView.holder
         surfaceHolder.addCallback(object : BasicSurfaceHolderCallback() {
-            override fun surfaceCreated(holder: SurfaceHolder?) {
+            override fun surfaceCreated(holder: SurfaceHolder) {
                 h264Player = H264Player(
                     this@H264PlayerActivity,
                     File(

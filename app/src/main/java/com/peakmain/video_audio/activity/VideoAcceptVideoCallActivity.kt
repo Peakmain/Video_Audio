@@ -25,7 +25,7 @@ class VideoAcceptVideoCallActivity : BaseActivity(), SocketAcceptLive.SocketCall
 
     override fun initView() {
         surface_view.holder.addCallback(object:BasicSurfaceHolderCallback(){
-            override fun surfaceCreated(holder: SurfaceHolder?) {
+            override fun surfaceCreated(holder: SurfaceHolder) {
                 surface = holder?.surface
                 decodecPlayerLiveH265 =
                     DecodecVideoCallLiveH265()

@@ -75,7 +75,7 @@ class CameraXHelper(
                 parent.addView(mTextureView, 0)
                 parent.requestLayout()
             }
-            mTextureView.surfaceTexture = surfaceTexture
+            mTextureView.setSurfaceTexture(surfaceTexture)
         }
     }
 
