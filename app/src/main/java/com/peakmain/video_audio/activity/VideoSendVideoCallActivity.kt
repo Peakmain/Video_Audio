@@ -26,7 +26,7 @@ class VideoSendVideoCallActivity : BaseActivity(), WebSocketSendLive.SocketCallb
 
     override fun initView() {
         surface_view.holder.addCallback(object: BasicSurfaceHolderCallback(){
-            override fun surfaceCreated(holder: SurfaceHolder?) {
+            override fun surfaceCreated(holder: SurfaceHolder) {
                 surface = holder?.surface
                 decodecPlayerLiveH265 =
                     DecodecVideoCallLiveH265()

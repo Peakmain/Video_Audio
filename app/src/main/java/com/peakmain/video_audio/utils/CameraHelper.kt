@@ -35,7 +35,7 @@ class CameraHelper(surfaceView: SurfaceView) : Camera.PreviewCallback {
 
     init {
         surfaceView.holder.addCallback(object : BasicSurfaceHolderCallback() {
-            override fun surfaceCreated(holder: SurfaceHolder?) {
+            override fun surfaceCreated(holder: SurfaceHolder) {
                 startPreview(holder)
             }
         })

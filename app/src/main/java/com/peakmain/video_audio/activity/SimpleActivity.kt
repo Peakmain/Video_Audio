@@ -96,8 +96,10 @@ class SimpleActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == screenRequestCode && resultCode == Activity.RESULT_OK) {
-            mMediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, data)
-            initMediaCodec()
+            data?.let {
+                mMediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, data)
+                initMediaCodec()
+            }
         }
     }
 
@@ -144,7 +146,7 @@ class SimpleActivity : BaseActivity() {
                     //这是dsp的数据，无法直接使用
                     val byteBuffer = mMediaCodec.getOutputBuffer(outIndex)
                     val outData = ByteArray(bufferInfo.size)
-                    byteBuffer.get(outData)
+                    byteBuffer?.get(outData)
                     FileUtils.writeBytes(outData, "codec.h264")
                     FileUtils.writeContent(outData, "codec.txt")
                     mMediaCodec.releaseOutputBuffer(outIndex, false)

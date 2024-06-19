@@ -49,7 +49,7 @@ class ProjectScreenSendActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             val mediaProjection: MediaProjection =
-                mMediaProjectionManager.getMediaProjection(resultCode, data)
+                data?.let { mMediaProjectionManager.getMediaProjection(resultCode, it) }
                     ?: return
             mWebSocketLive = WebSocketSendLive()
             mWebSocketLive.start(mediaProjection)
