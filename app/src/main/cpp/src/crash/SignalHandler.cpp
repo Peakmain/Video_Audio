@@ -47,6 +47,7 @@ bool installSignalHandlers() {
     }
     struct sigaction sa{};
     memset(&sa, 0, sizeof(sa));
+    sigemptyset(&sa.sa_mask);
     //不同堆栈处理并且可将参数传递下去
     sa.sa_flags = SA_ONSTACK | SA_SIGINFO;
     // 指定信号处理的回调函数

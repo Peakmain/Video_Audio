@@ -97,8 +97,8 @@ Java_com_peakmain_video_1audio_simple_mmkv_MMKV_getString(JNIEnv *env, jobject t
                                                           jstring key_) {
     const char *key = env->GetStringUTFChars(key_, 0);
     MMKV *kv = reinterpret_cast<MMKV *>(handle);
-    std::string value=kv->getString(key);
-    LOGE("%s",value.c_str());
+    std::string value = kv->getString(key);
+    LOGE("%s", value.c_str());
     env->ReleaseStringUTFChars(key_, key);
     return env->NewStringUTF(value.c_str());
 }
